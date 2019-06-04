@@ -18,7 +18,7 @@ const app = new Clarifai.App({
 const particle_options = {
   particles: {
     number: {
-      value: 30,
+      value: 100,
       density: {
         enable: true,
         value_area: 800
@@ -35,8 +35,27 @@ class App extends Component {
       imageURL: '',
       box: {},
       route: 'signin',
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+          id: '',
+          name: '',
+          email: '',
+          entries: 0,
+          joined: ''
+      }
     }
+  }
+
+  loadUser = (data) => {
+    this.setState({
+      user: {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        entries: data.entries,
+        joined: data.joined
+      }
+    })
   }
 
   calculateFaceLocation = (data) => {
@@ -94,7 +113,7 @@ class App extends Component {
           :(
             route === 'signin'?
               <SignIn onRouteChange = {this.onRouteChange}/>
-            :<Register/>
+            :<Register loadUser={this.loadUser} onRouteChange={this.onRouteChange}/>
           )
         }
       </div>
